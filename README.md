@@ -3,7 +3,10 @@ This application contains tiny scripts for time management when working on the c
 
 # INSTALL
 Use the following command:
+
+```
 source ./environment_setup
+```
 
 # LIST OF APPLICATIONS
 
