@@ -1,0 +1,42 @@
+#!/usr/bin/python
+
+import os
+import sys
+import time
+import datetime
+from datetime import date, timedelta
+
+dbprefix=os.path.dirname(os.path.realpath(__file__))+"/"
+
+dbfile = dbprefix+".distlog.db"
+
+
+def helproutine():
+    print 'pomo-distlog usage:'
+    print 'pomo-distlog [switches] [line to log]'
+    print '-f flush'
+    print '-l list log'
+    print '-h help (shows this)'
+
+# read previous lines
+if os.path.isfile(dbfile):
+    lines = open(dbfile).readlines()
+else:
+    lines = []
+
+# read switches
+if len(sys.argv)==1 or sys.argv[1]=="-h":
+    helproutine()
+elif sys.argv[1]=="-l":
+    print ''.join(lines)
+elif sys.argv[1]=="-f":
+    lines = []
+else:
+    timenow = str(datetime.datetime.today())
+    lines.append(timenow+' '+' '.join(sys.argv[1:])+'\n')
+
+# write back
+f=open(dbfile,'w')
+for l in lines:
+    f.write(l)
+f.close()
