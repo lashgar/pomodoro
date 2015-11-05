@@ -14,9 +14,10 @@ dbfile = dbprefix+".distlog.db"
 def helproutine():
     print 'pomo-distlog usage:'
     print 'pomo-distlog [switches] [line to log]'
+    print '-h help (shows this)'
     print '-f flush'
     print '-l list log'
-    print '-h help (shows this)'
+    print '-r <line #> remove the line'
 
 # read previous lines
 if os.path.isfile(dbfile):
@@ -28,9 +29,23 @@ else:
 if len(sys.argv)==1 or sys.argv[1]=="-h":
     helproutine()
 elif sys.argv[1]=="-l":
-    print ''.join(lines)
+    for k in range(0,len(lines)):
+        print '['+str(k+1)+'] '+lines[k]
 elif sys.argv[1]=="-f":
     lines = []
+elif sys.argv[1]=="-r":
+    try:
+        rmlnumber = int(sys.argv[2])
+    except:
+        helproutine()
+        exit(-1)
+    if rmlnumber<=0 or rmlnumber>len(lines):
+        print '-r invalid line number '+str(rmlnumber)
+        print 'valid range: 1 to '+str(len(lines))
+        exit(-1)
+    rmlnumber-=1
+    print 'removing '+lines[rmlnumber]
+    lines = lines[0:rmlnumber]+lines[rmlnumber+1:]
 else:
     timenow = str(datetime.datetime.today())
     lines.append(timenow+' '+' '.join(sys.argv[1:])+'\n')
